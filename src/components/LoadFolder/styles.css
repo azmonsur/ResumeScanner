@@ -1,0 +1,98 @@
+.load-folder-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 80px;
+}
+
+.load-folder-wrapper .input {
+  text-align: center;
+  border: 1px dashed grey;
+  border-radius: 10px 10px 0 0;
+  padding: 50px 180px;
+}
+
+.load-folder-wrapper .input input {
+  display: none;
+}
+
+.load-folder-wrapper .input label {
+  cursor: pointer;
+  background-color: rgb(225, 247, 247);
+  padding: 2px 8px;
+}
+
+.load-folder-wrapper .input label:hover {
+  border-bottom: 1px dashed grey;
+}
+
+.load-folder-wrapper .warning {
+  margin-top: 0px;
+  background-color: rgb(245, 199, 209);
+  border-radius: 0 0 10px 10px;
+  padding: 2px 100px;
+  font-size: 0.85rem;
+  color: rgb(78, 77, 77);
+}
+
+.load-folder-wrapper .display-docs {
+  padding: 20px 30px;
+  margin-top: 30px;
+}
+
+.load-folder-wrapper .display-docs .no-content {
+  font-style: italic;
+  color: rgb(240, 101, 101);
+}
+
+.load-folder-wrapper .display-docs .processed-files {
+  background-color: rgb(108, 179, 91);
+  border-radius: 5px;
+
+  margin-bottom: 10px;
+  color: white;
+  padding: 2px 20px;
+}
+
+.load-folder-wrapper .display-docs .all-docs {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  row-gap: 15px;
+  column-gap: 15px;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.load-folder-wrapper .display-docs .all-docs .each-doc {
+  padding: 5px 10px;
+  text-align: justify;
+  box-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.16), 0 2px 10px 0 rgba(0, 0, 0, 0.12);
+  background-image: linear-gradient(
+    to left,
+    rgb(212, 233, 220),
+    rgb(152, 184, 181),
+    rgb(238, 223, 210)
+  );
+  border: 1px solid rgb(108, 179, 91);
+  border-radius: 10px;
+}
+
+.load-folder-wrapper .display-docs .all-docs .each-doc .text {
+  font-size: 0.8rem;
+  padding: 5px;
+  padding-bottom: 10px;
+}
+
+/*=========================================================MEDIA QUERY====================================================*/
+@media (max-width: 992px) {
+  .load-folder-wrapper .display-docs .all-docs {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (max-width: 601px) {
+  .load-folder-wrapper .display-docs .all-docs {
+    grid-template-columns: repeat(1, 1fr);
+  }
+}

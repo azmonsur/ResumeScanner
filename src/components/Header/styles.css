@@ -1,0 +1,13 @@
+.header-wrapper {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: gray;
+  text-align: center;
+}
+
+.header-wrapper h1 {
+  font-weight: bold;
+  color: red;
+}
