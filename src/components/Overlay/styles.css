@@ -1,0 +1,46 @@
+.overlay-wrapper {
+}
+
+.overlay-wrapper .overlay {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.555);
+}
+
+.overlay-wrapper .circle-wrapper {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  row-gap: 10px;
+  justify-content: center;
+  align-items: center;
+  z-index: 1000;
+  background-color: var(--off-white);
+  padding: 40px;
+}
+
+.overlay-wrapper .circle {
+  width: 7vmin;
+  height: 7vmin;
+  border: solid 5px var(--grey);
+  border-radius: 50%;
+  border-bottom-color: var(--accent);
+  animation: rotate 1s linear infinite;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotateZ(0deg);
+  }
+
+  100% {
+    transform: rotateZ(360deg);
+  }
+}

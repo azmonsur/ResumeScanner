@@ -1,18 +1,39 @@
-import React, { useState } from "react";
+import React, { useState, useRef } from "react";
 import Docxtemplater from "docxtemplater";
 import PizZip from "pizzip";
 
+import searchModel from "../../helpers/searchModel";
+
 import "./styles.css";
+import AllInputs from "./AllInputs";
+import DisplayDocs from "./DisplayDocs";
+import Overlay from "../Overlay";
 
 const Scanner = () => {
   const [docs, setDocs] = useState([]);
   const [isLoadFolder, setIsLoadFolder] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [addedData, setAddedData] = useState([]);
+  const [docType, setDocType] = useState("Resume");
+  const [prompt, setPrompt] = useState("");
 
-  const inputOnClick = (e) => {
-    e.target.value = "";
-  };
+  const docTypes = [
+    {
+      name: "Resume",
+      keywords: [
+        "activities",
+        "hobbies",
+        "experience",
+        "objective",
+        "reference",
+        "skill",
+        "education",
+        "work",
+      ],
+    },
+  ];
 
-  const addFiles = (e) => {
+  const addFiles = async (e) => {
     setDocs([]);
     const files = e.target.files;
 
@@ -22,21 +43,66 @@ const Scanner = () => {
       const fileType = file.name.split(".").slice(-1)[0];
       const fileName = file.name.split(".").slice(0, -1).join("");
 
-      if ((fileType === "docx" || fileType === "doc") && file.name[0] !== "~") {
-        var reader = new FileReader();
-        reader.onload = async (e) => {
-          const content = e.target.result;
-          var doc = new Docxtemplater(new PizZip(content), {
-            delimiters: {
-              start: "12op1j2po1j2poj1po",
-              end: "op21j4po21jp4oj1op24j",
-            },
-          });
+      try {
+        setLoading((prev) => !prev);
+        if (
+          (fileType === "docx" || fileType === "doc") &&
+          file.name[0] !== "~"
+        ) {
+          var reader = new FileReader();
+          reader.onload = async (e) => {
+            const content = e.target.result;
+            // console.log(e.target.result);
+            var doc = new Docxtemplater(new PizZip(content), {
+              delimiters: {
+                start: "12op1j2po1j2poj1po",
+                end: "op21j4po21jp4oj1op24j",
+              },
+            });
 
-          var text = doc.getFullText();
-          setDocs((prev) => [...prev, { fileName, text }]);
-        };
-        reader.readAsArrayBuffer(file);
+            var text = doc.getFullText();
+
+            let count = 0;
+            const allkeywords = docTypes.filter(
+              (doc) => doc.name === docType
+            )[0];
+
+            allkeywords.keywords.forEach((keyword) => {
+              if (text.includes(keyword)) {
+                count++;
+              }
+            });
+
+            const countPerc = (count * 100) / allkeywords.keywords.length;
+
+            if (countPerc >= 35) {
+              const promptMatch = await searchModel(prompt, text);
+              let extractData = false;
+              if (addedData.length > 0) {
+                extractData = await searchModel(
+                  `Extract ${addedData.join(", ")}.`,
+                  text
+                );
+              }
+
+              // console.log(extractData);
+
+              setDocs((prev) => [
+                ...prev,
+                {
+                  fileName: fileName.replace(/_|\.|-|\*/g, " "),
+                  text: text,
+                  promptMatch,
+                  extractData,
+                },
+              ]);
+              setLoading((prev) => !prev);
+            }
+          };
+          reader.readAsArrayBuffer(file);
+        }
+      } catch (error) {
+        console.log(error);
       }
     }
 
@@ -45,42 +111,29 @@ const Scanner = () => {
 
   return (
     <div className="load-folder-wrapper">
-      <div className="input">
-        <label htmlFor="load-folder-input">Choose folder</label>
-        <input
-          type="file"
-          id="load-folder-input"
-          onChange={addFiles}
-          multiple
-          webkitdirectory=""
-          directory=""
-          onClick={inputOnClick}
+      {loading && <Overlay />}
+
+      <>
+        <AllInputs
+          addedData={addedData}
+          setAddedData={setAddedData}
+          prompt={prompt}
+          docType={docType}
+          docTypes={docTypes}
+          setDocType={setDocType}
+          setPrompt={setPrompt}
+          addFiles={addFiles}
         />
-      </div>
-      <div className="warning">
-        Only <strong>word documents</strong> will be processed
-      </div>
-      <div className="display-docs">
-        {docs.length === 0 ? (
-          <div className="no-content">
-            {isLoadFolder && <span>No file processed</span>}
-          </div>
-        ) : (
-          <div className="">
-            <div className="processed-files">
-              {docs.length} {docs.length === 1 ? "file" : "files"} processed.
-            </div>
-            <div className="all-docs">
-              {docs.map((doc, key) => (
-                <div className="each-doc" key={key}>
-                  <h4>{doc.fileName}</h4>
-                  <div className="text">{doc.text.slice(0, 300)}...</div>
-                </div>
-              ))}
-            </div>
-          </div>
-        )}
-      </div>
+      </>
+      <>
+        <DisplayDocs
+          docs={docs}
+          setDocs={setDocs}
+          isLoadFolder={isLoadFolder}
+          setIsLoadFolder={setIsLoadFolder}
+          addedData={addedData}
+        />
+      </>
     </div>
   );
 };
