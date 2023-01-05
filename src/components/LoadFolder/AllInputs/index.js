@@ -108,7 +108,7 @@ const AllInputs = ({
               border: !prompt && "none",
             }}
           >
-            Choose folder
+            {allowMultiple ? "Choose folder" : "Select file"}
           </label>
           {allowMultiple ? (
             <input
