@@ -1,0 +1,44 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  row-gap: 30px;
+  padding: 0px 50px 20px;
+  justify-content: center;
+  align-items: center;
+  background-color: var(--primary);
+  color: var(--accent);
+  margin-top: 80px !important;
+}
+
+.footer .nick {
+  font-weight: bold;
+  font-size: 1.4rem;
+  transition: all 0.3s linear;
+}
+
+.footer .nick:hover {
+  color: var(--off-white);
+}
+
+.footer .copyright {
+  margin-top: 10px;
+}
+
+.footer .socials .social-wrapper {
+  display: flex;
+  column-gap: 40px;
+  justify-content: flex-start;
+  align-items: flex-start;
+}
+
+.footer .socials .social-wrapper a {
+  display: block;
+  font-size: 2rem;
+  width: 10px;
+  height: 10px;
+  transition: all 0.3s linear;
+}
+
+.footer .socials .social-wrapper a:hover {
+  color: var(--off-white);
+}
