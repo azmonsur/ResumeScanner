@@ -2,7 +2,7 @@ import { Configuration, OpenAIApi } from "openai";
 
 const searchModel = async (prompt, text) => {
   const configuration = new Configuration({
-    apiKey: "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",
+    apiKey: process.env.REACT_APP_OPENAI_KEY,
   });
   const openai = new OpenAIApi(configuration);
 
