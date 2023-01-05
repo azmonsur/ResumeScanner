@@ -18,7 +18,8 @@ const AllInputs = ({
     e.target.value = "";
   };
 
-  const handleAddData = () => {
+  const handleAddData = (e) => {
+    e.preventDefault();
     if (!searchDataRef.current.value) return;
     setAddedData((prev) => [...prev, searchDataRef.current.value]);
 
@@ -69,12 +70,14 @@ const AllInputs = ({
           </div>
         </div>
         <div className="search-data">
-          <input
-            ref={searchDataRef}
-            type="text"
-            placeholder="Enter data to extract..."
-          />
-          <button onClick={handleAddData}>Add</button>
+          <form action="" onSubmit={handleAddData}>
+            <input
+              ref={searchDataRef}
+              type="text"
+              placeholder="Enter data to extract..."
+            />
+            <button>Add</button>
+          </form>
         </div>
 
         <div className="added-data">

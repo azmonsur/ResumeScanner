@@ -49,21 +49,22 @@ const DisplayDocs = ({
                       ? "Yes"
                       : "No"}
                   </div>
-                  {doc.promptMatch.toLowerCase().includes("yes") && (
-                    <ul className="text">
-                      {doc.extractData
-                        .split(/[A-Z]{1}[a-z]+:/)
-                        .slice(1)
-                        .map((data, key) => (
-                          <li key={key}>
-                            <span style={{ textTransform: "capitalize" }}>
-                              {" "}
-                            </span>
-                            <span>{data}</span>
-                          </li>
-                        ))}
-                    </ul>
-                  )}
+                  {doc.promptMatch.toLowerCase().includes("yes") &&
+                    doc.extractData.length > 0 && (
+                      <ul className="text">
+                        {doc.extractData
+                          .split(/[A-Z]{1}[a-z]+:/)
+                          .slice(1)
+                          .map((data, key) => (
+                            <li key={key}>
+                              <span style={{ textTransform: "capitalize" }}>
+                                {" "}
+                              </span>
+                              <span>{data}</span>
+                            </li>
+                          ))}
+                      </ul>
+                    )}
                 </div>
               ))}
             </div>

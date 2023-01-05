@@ -85,8 +85,6 @@ const Scanner = () => {
                 );
               }
 
-              // console.log(extractData);
-
               setDocs((prev) => [
                 ...prev,
                 {
@@ -107,6 +105,7 @@ const Scanner = () => {
     }
 
     setIsLoadFolder(true);
+    // setLoading((prev) => !prev);
   };
 
   return (
